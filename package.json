@@ -1,0 +1,17 @@
+{
+  "name": "gamal-back",
+  "version": "1.0.0",
+  "description": "backend gamal digital",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cristhian Leal",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
