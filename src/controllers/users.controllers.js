@@ -45,26 +45,31 @@ export const getUser = async (req, res) => {
 }
 
 export const createUser = async (req, res) => {
-  const { email, password} = req.body
+  const { email, password,code} = req.body
   
-  const user = await User({ email, password})
-  user.password = encryptPassword(password)
-
-  try {
-    await user.save()
-    res.status(201).json({
-      message: `Usuario ${email} creado`,
-      user: user.email
-    })
-  } catch (error) {
-    res.status(500).json({
-      message: 'No se pudo crear el usuario',
-      fields: {
-        email: error.errors?.email?.message,
-        password: error.errors?.password?.message
-      }
-    })
+  if (code === '112233'){
+    const user = await User({ email, password})
+    try {
+      await user.save()
+      res.status(201).json({
+        message: `Usuario ${email} creado`,
+        user: user.email
+      })
+      return
+    } catch (error) {
+      res.status(500).json({
+        message: 'No se pudo crear el usuario',
+        fields: {
+          email: error.errors?.email?.message,
+          password: error.errors?.password?.message
+        }
+      })
+      return
+    }
   }
+  return res.status(500).json({
+    message: 'No se pudo crear el usuario'
+  })
 }
 
 export const deleteUser = async (req, res) => {

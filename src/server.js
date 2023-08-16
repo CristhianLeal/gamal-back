@@ -22,11 +22,11 @@ export class Server {
   }
 
   routes() {
-    this.app.use('/api/users', usersRoutes)
+    this.app.use('/users', usersRoutes)
   }
 
   listen() {
-    this.app.listen(8080, () => {
+    this.app.listen(8003, () => {
       console.log('Servidor corriendo en el puerto 8003')
     })
   }
