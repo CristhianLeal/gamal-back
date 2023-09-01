@@ -6,15 +6,15 @@ export const getUsers = async (req, res) => {
   try {
     const users = await User.find({})
     if (users.length > 0) {
-          return res.status(200).json({
+      return res.status(200).json({
         message: 'Usuarios retornados con éxito',
         users
       })
     } else {
-    res.status(204).json({
-      message: 'No hay usuarios',
-      data: []
-    })
+      res.status(204).json({
+        message: 'No hay usuarios',
+        data: []
+      })
     }
   } catch (error) {
     return res.status(500).json({
@@ -46,16 +46,15 @@ export const getUser = async (req, res) => {
 }
 
 export const createUser = async (req, res) => {
-  const { email, password,code} = req.body
-  
-  if (code === '112233'){
-    const existEmail = await User.findOne({"email": email})
-    if (existEmail){
-      res.status(206).send(`Este correo electrónico ya esta en uso`)
+  const { email, password, code } = req.body
+
+  if (code === '112233') {
+    const existEmail = await User.findOne({ email })
+    if (existEmail) {
+      res.status(206).send('Este correo electrónico ya esta en uso')
       return
-    }
-    else{
-      const user = await User({ email, password})
+    } else {
+      const user = await User({ email, password })
       try {
         await user.save()
         res.status(201).json({
@@ -104,19 +103,19 @@ export const loginUser = async (req, res) => {
   const claveToken = process.env.CLAVE
   const { email, password } = req.body
   try {
-      const user = await User.findOne({ email })
-      if (user) {
-          if (password === user.password) {
-          const token = jwt.sign({ user }, claveToken, { expiresIn: "1h" })
-          return res.status(200).json({ user, token })
-          } else {
-          return res.status(206).json({ message: "Datos incorrectos." })
-          }
+    const user = await User.findOne({ email })
+    if (user) {
+      if (password === user.password) {
+        const token = jwt.sign({ user }, claveToken, { expiresIn: '1h' })
+        return res.status(200).json({ user, token })
       } else {
-          return res.status(206).json({ message: "Datos incorrectos." })
+        return res.status(206).json({ message: 'Datos incorrectos.' })
       }
+    } else {
+      return res.status(206).json({ message: 'Datos incorrectos.' })
+    }
   } catch (error) {
     console.error(error)
-    return res.status(206).json({ message: "Ha ocurrido un error inesperado" })
+    return res.status(206).json({ message: 'Ha ocurrido un error inesperado' })
   }
 }
