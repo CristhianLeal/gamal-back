@@ -28,18 +28,18 @@ export const getPerson = async (req, res) => {
 
   if (!isValidObjectId(id)) {
     return res.status(400).json({
-      message: 'El id del usuario no es válido'
+      message: 'El id de la persona no es válido'
     })
   }
 
   const person = await Person.findById(id)
   if (!person) {
     return res.status(404).json({
-      message: 'Usuario no encontrado'
+      message: 'persona no encontrado'
     })
   }
   res.status(200).json({
-    message: `Obtuviste un usuario llamado ${person.email}`,
+    message: `Obtuviste un persona llamada ${person.name}`,
     person
   })
 }
