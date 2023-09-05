@@ -17,7 +17,17 @@ const PersonSchema = new Schema(
       type: String,
       required: [true, 'La descripción es requerida']
     },
-    socialMed:
+    insta:
+    {
+      type: String,
+      required: [true, 'La descripción es requerida']
+    },
+    tiktok:
+    {
+      type: String,
+      required: [true, 'La descripción es requerida']
+    },
+    gmail:
     {
       type: String,
       required: [true, 'La descripción es requerida']
@@ -28,4 +38,4 @@ const PersonSchema = new Schema(
   }
 )
 
-export default model('User', PersonSchema)
+export default model('Person', PersonSchema)
