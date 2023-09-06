@@ -88,3 +88,43 @@ export const deleteProduct = async (req, res) => {
     message: `El producto con el nombre '${product?.productName}' fue eliminado`
   })
 }
+
+export const editProduct = async (req, res) => {
+  const { id } = req.params
+  const { productName, description, picture, format } = req.body
+  if (!isValidObjectId(id)) {
+    return res.status(404).json({
+      message: 'Producto: no es valido para edición'
+    })
+  }
+  const productById = await Product.findById(id)
+  if (!productById) {
+    return res.status(404).json({
+      message: 'Producto: no existente para edición'
+    })
+  }
+
+  const productByName = await Product.findOne({ productName })
+  if (productByName && productById.productName !== productName) {
+    return res.status(400).json({
+      message: 'El nombre del producto ya existe'
+    })
+  }
+
+  try {
+    await Product.findByIdAndUpdate({ _id: id }, { productName, description, picture, format })
+    res.status(201).json({
+      message: `Producto ${productName} editado`
+    })
+  } catch (error) {
+    res.status(400).json({
+      message: 'Ha ocurrido un error',
+      fields: {
+        name: error.errors?.name?.message,
+        description: error.errors?.description?.message,
+        picture: error.errors?.picture?.message,
+        format: error.errors?.format?.message
+      }
+    })
+  }
+}
