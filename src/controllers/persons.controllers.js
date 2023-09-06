@@ -92,3 +92,44 @@ export const deletePerson = async (req, res) => {
     message: `La persona con el nombre '${person?.name}' fue eliminada`
   })
 }
+
+export const editPerson = async (req, res) => {
+  const { id } = req.params
+  const { name, description, picture, insta, tiktok, gmail } = req.body
+  if (!isValidObjectId(id)) {
+    return res.status(404).json({
+      message: 'Persona: no es valido para edición'
+    })
+  }
+  const personById = await Person.findById(id)
+  if (!personById) {
+    return res.status(404).json({
+      message: 'Persona: no existente para edición'
+    })
+  }
+
+  const personByName = await Person.findOne({ name })
+  if (personByName && personById.name !== name) {
+    return res.status(400).json({
+      message: 'El nombre de la persona ya existe'
+    })
+  }
+
+  try {
+    await Person.findByIdAndUpdate({ _id: id }, { name, description, picture, insta, tiktok, gmail })
+    res.status(201).json({
+      message: `Persona ${name} editada`
+    })
+  } catch (error) {
+    res.status(400).json({
+      message: 'Ha ocurrido un error',
+      fields: {
+        name: error.errors?.name?.message,
+        description: error.errors?.description?.message,
+        picture: error.errors?.picture?.message,
+        insta: error.errors?.insta?.message,
+        gmail: error.errors?.gmail?.message
+      }
+    })
+  }
+}
