@@ -16,20 +16,17 @@ const PostSchema = new Schema(
     },
     fotos: [
       {
-        type: String,
-        required: [true, 'El link foto es requerido']
+        type: String
       }
     ],
     videos: [
       {
-        type: String,
-        required: [true, 'El link video es requerido']
+        type: String
       }
     ],
     reels: [
       {
-        type: String,
-        required: [true, 'El link reel es requerido']
+        type: String
       }
     ]
   },
