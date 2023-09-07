@@ -43,12 +43,14 @@ export const getPost = async (req, res) => {
 }
 
 export const createPost = async (req, res) => {
+  console.log(req.body)
   const { name, description, picture, foto, video, reel } = req.body
   const existName = await Post.findOne({ name })
   if (existName) {
     res.status(206).send('Este nombre ya esta en uso')
   } else {
-    const post = await Post({ name, description, picture, foto, video, reel })
+    const post = await Post({ name, description, picture, fotos: foto, videos: [video], reels: [reel] })
+    console.log(post)
     try {
       await post.save()
       res.status(201).json({
