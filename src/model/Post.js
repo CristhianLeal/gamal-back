@@ -1,24 +1,5 @@
 import { model, Schema } from 'mongoose'
 
-const fotoSchema = new Schema({
-  foto: {
-    type: String,
-    required: [true, 'El link foto es requerido']
-  }
-}, { _id: false })
-const videoSchema = new Schema({
-  video: {
-    type: String,
-    required: [true, 'El link video es requerido']
-  }
-}, { _id: false })
-const reelSchema = new Schema({
-  reel: {
-    type: String,
-    required: [true, 'El link reel es requerido']
-  }
-}, { _id: false })
-
 const PostSchema = new Schema(
   {
     name: {
@@ -33,9 +14,24 @@ const PostSchema = new Schema(
       type: String,
       required: [true, 'la foto de portada es requerida']
     },
-    fotos: [fotoSchema],
-    videos: [videoSchema],
-    reels: [reelSchema]
+    fotos: [
+      {
+        type: String,
+        required: [true, 'El link foto es requerido']
+      }
+    ],
+    videos: [
+      {
+        type: String,
+        required: [true, 'El link video es requerido']
+      }
+    ],
+    reels: [
+      {
+        type: String,
+        required: [true, 'El link reel es requerido']
+      }
+    ]
   },
   {
     timestamps: true
