@@ -43,7 +43,6 @@ export const getPost = async (req, res) => {
 }
 
 export const createPost = async (req, res) => {
-  console.log(req.body)
   const { name, description, picture, foto, video, reel } = req.body
   const existName = await Post.findOne({ name })
   if (existName) {
@@ -84,20 +83,20 @@ export const deletePost = async (req, res) => {
   const post = await Post.findByIdAndDelete(id)
   if (!post) {
     return res.status(404).json({
-      message: 'Persona no encontrado'
+      message: 'Post no encontrado'
     })
   }
   res.status(200).json({
-    message: `La posta con el nombre '${post?.name}' fue eliminada`
+    message: `El post con el nombre '${post?.name}' fue eliminado`
   })
 }
 
 export const editPost = async (req, res) => {
   const { id } = req.params
-  const { name, description, picture, insta, tiktok, gmail } = req.body
+  const { name, description, picture, foto, video, reel } = req.body
   if (!isValidObjectId(id)) {
     return res.status(404).json({
-      message: 'Persona: no es valido para edición'
+      message: 'post: no es valido para edición'
     })
   }
   const postById = await Post.findById(id)
@@ -115,7 +114,7 @@ export const editPost = async (req, res) => {
   }
 
   try {
-    await Post.findByIdAndUpdate({ _id: id }, { name, description, picture, insta, tiktok, gmail })
+    await Post.findByIdAndUpdate({ _id: id }, { name, description, picture, fotos: foto, videos: video, reels: reel })
     res.status(201).json({
       message: `Post ${name} editado`
     })
@@ -126,8 +125,9 @@ export const editPost = async (req, res) => {
         name: error.errors?.name?.message,
         description: error.errors?.description?.message,
         picture: error.errors?.picture?.message,
-        insta: error.errors?.insta?.message,
-        gmail: error.errors?.gmail?.message
+        fotos: error.errors?.fotos?.message,
+        videos: error.errors?.videos?.message,
+        reels: error.errors?.reels?.message
       }
     })
   }
