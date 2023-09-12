@@ -45,12 +45,12 @@ export const getPerson = async (req, res) => {
 }
 
 export const createPerson = async (req, res) => {
-  const { name, description, picture, insta, tiktok, gmail } = req.body
+  const { name, description, picture, insta, face, tiktok, gmail } = req.body
   const existName = await Person.findOne({ name })
   if (existName) {
     res.status(206).send('Este nombre ya esta en uso')
   } else {
-    const person = await Person({ name, description, picture, insta, tiktok, gmail })
+    const person = await Person({ name, description, picture, insta, face, tiktok, gmail })
     try {
       await person.save()
       res.status(201).json({
@@ -65,6 +65,7 @@ export const createPerson = async (req, res) => {
           description: error.errors?.description?.message,
           picture: error.errors?.picture?.message,
           insta: error.errors?.insta?.message,
+          face: error.errors?.face?.message,
           tiktok: error.errors?.tiktok?.message,
           gmail: error.errors?.gmail?.message
         }
@@ -95,7 +96,7 @@ export const deletePerson = async (req, res) => {
 
 export const editPerson = async (req, res) => {
   const { id } = req.params
-  const { name, description, picture, insta, tiktok, gmail } = req.body
+  const { name, description, picture, insta, face, tiktok, gmail } = req.body
   if (!isValidObjectId(id)) {
     return res.status(404).json({
       message: 'Persona: no es valido para edición'
@@ -116,7 +117,7 @@ export const editPerson = async (req, res) => {
   }
 
   try {
-    await Person.findByIdAndUpdate({ _id: id }, { name, description, picture, insta, tiktok, gmail })
+    await Person.findByIdAndUpdate({ _id: id }, { name, description, picture, insta, face, tiktok, gmail })
     res.status(201).json({
       message: `Persona ${name} editada`
     })
@@ -128,6 +129,8 @@ export const editPerson = async (req, res) => {
         description: error.errors?.description?.message,
         picture: error.errors?.picture?.message,
         insta: error.errors?.insta?.message,
+        face: error.errors?.face?.message,
+        tiktok: error.errors?.tiktok?.message,
         gmail: error.errors?.gmail?.message
       }
     })
