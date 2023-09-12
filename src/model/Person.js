@@ -19,18 +19,19 @@ const PersonSchema = new Schema(
     },
     insta:
     {
-      type: String,
-      required: [true, 'La descripción es requerida']
+      type: String
+    },
+    face:
+    {
+      type: String
     },
     tiktok:
     {
-      type: String,
-      required: [true, 'La descripción es requerida']
+      type: String
     },
     gmail:
     {
-      type: String,
-      required: [true, 'La descripción es requerida']
+      type: String
     }
   },
   {
