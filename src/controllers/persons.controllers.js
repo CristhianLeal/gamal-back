@@ -76,13 +76,11 @@ export const createPerson = async (req, res) => {
 
 export const deletePerson = async (req, res) => {
   const { id } = req.params
-
   if (!isValidObjectId(id)) {
     return res.status(400).json({
       message: 'El id de la persona no es valido'
     })
   }
-
   const person = await Person.findByIdAndDelete(id)
   if (!person) {
     return res.status(404).json({
