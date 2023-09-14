@@ -83,7 +83,7 @@ export const deleteHome = async (req, res) => {
 
 export const editHome = async (req, res) => {
   const { id } = req.params
-  const { video, fotos } = req.body
+  const { video, foto } = req.body
   if (!isValidObjectId(id)) {
     return res.status(404).json({
       message: 'id no valida para edición'
@@ -96,7 +96,7 @@ export const editHome = async (req, res) => {
     })
   }
   try {
-    await Home.findByIdAndUpdate({ _id: id }, { video, fotos })
+    await Home.findByIdAndUpdate({ _id: id }, { video, fotos: foto })
     res.status(201).json({
       message: 'Home editada'
     })
