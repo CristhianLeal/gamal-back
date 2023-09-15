@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getHomes, getHome, createHome, deleteHome, editHome } from '../controllers/Home.controllers.js'
+import { getHomes, getHome, createHome, deleteHome, editHome } from '../controllers/home.controllers.js'
 
 const router = Router()
 
