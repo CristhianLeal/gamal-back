@@ -5,8 +5,7 @@ import {
   productsRoutes,
   postsRoutes,
   metricsRoutes,
-  homeRoutes,
-  mediaRoutes
+  homeRoutes
 } from './routes/index.js'
 import cors from 'cors'
 import { dbConnection } from './db/config.js'
@@ -35,7 +34,6 @@ export class Server {
     this.app.use('/posts', postsRoutes)
     this.app.use('/metrics', metricsRoutes)
     this.app.use('/home', homeRoutes)
-    this.app.use('/media', mediaRoutes)
   }
 
   listen () {
