@@ -4,8 +4,7 @@ const HomeSchema = new Schema(
   {
     video:
     {
-      type: String,
-      required: [true, 'La descripción es requerida']
+      type: String
     },
     fotos: [
       {
