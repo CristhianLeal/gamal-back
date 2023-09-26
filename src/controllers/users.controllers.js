@@ -26,13 +26,11 @@ export const getUsers = async (req, res) => {
 
 export const getUser = async (req, res) => {
   const { id } = req.params
-
   if (!isValidObjectId(id)) {
     return res.status(400).json({
       message: 'El id del usuario no es válido'
     })
   }
-
   const user = await User.findById(id)
   if (!user) {
     return res.status(404).json({
@@ -47,7 +45,6 @@ export const getUser = async (req, res) => {
 
 export const createUser = async (req, res) => {
   const { email, password, code } = req.body
-
   if (code === '112233') {
     const existEmail = await User.findOne({ email })
     if (existEmail) {
@@ -55,11 +52,14 @@ export const createUser = async (req, res) => {
       return
     } else {
       const user = await User({ email, password })
+      const claveToken = process.env.CLAVE
+      const token = jwt.sign({ user }, claveToken, { expiresIn: '1h' })
       try {
         await user.save()
-        res.status(201).json({
+        res.status(200).json({
           message: `Usuario ${email} creado`,
-          user: user.email
+          user: user.email,
+          token
         })
         return
       } catch (error) {
@@ -81,13 +81,11 @@ export const createUser = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
   const { id } = req.params
-
   if (!isValidObjectId(id)) {
     return res.status(400).json({
       message: 'El id de usuario no es valido'
     })
   }
-
   const user = await User.findByIdAndDelete(id)
   if (!user) {
     return res.status(404).json({
