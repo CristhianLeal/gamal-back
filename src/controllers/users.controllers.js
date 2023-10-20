@@ -117,3 +117,41 @@ export const loginUser = async (req, res) => {
     return res.status(206).json({ message: 'Ha ocurrido un error inesperado' })
   }
 }
+
+export const editUser = async (req, res) => {
+  const { id } = req.params
+  const { email, password } = req.body
+  if (!isValidObjectId(id)) {
+    return res.status(404).json({
+      message: 'Usuario: no valido para edición'
+    })
+  }
+  const userById = await User.findById(id)
+  if (!userById) {
+    return res.status(404).json({
+      message: 'User: no existente para edición'
+    })
+  }
+
+  const userByName = await User.findOne({ email })
+  if (userByName && userById.email !== email) {
+    return res.status(400).json({
+      message: 'El nombre del producto ya existe'
+    })
+  }
+
+  try {
+    await User.findByIdAndUpdate({ _id: id }, { email, password })
+    res.status(201).json({
+      message: `Producto ${email} editado`
+    })
+  } catch (error) {
+    res.status(400).json({
+      message: 'Ha ocurrido un error',
+      fields: {
+        email: error.errors?.email?.message,
+        password: error.errors?.password?.message
+      }
+    })
+  }
+}
