@@ -9,6 +9,8 @@ import {
 } from './routes/index.js'
 import cors from 'cors'
 import { dbConnection } from './db/config.js'
+import https from 'https'
+import fs from 'fs'
 
 export class Server {
   constructor () {
@@ -36,9 +38,24 @@ export class Server {
     this.app.use('/home', homeRoutes)
   }
 
-  listen () {
-    this.app.listen(process.env.PORT, () => {
-      console.log('Servidor corriendo en el puerto:', process.env.PORT)
+  startHttpsServer () {
+    const httpsOptions = {
+      key: fs.readFileSync('ruta-a-tu-archivo-key.key'),
+      cert: fs.readFileSync('ruta-a-tu-archivo-cert.crt')
+    }
+    const httpsServer = https.createServer(httpsOptions, this.app)
+    httpsServer.listen(process.env.PORT, () => {
+      console.log('Servidor HTTPS corriendo en el puerto:', process.env.PORT)
     })
   }
+
+  listen () {
+    this.startHttpsServer()
+  }
+
+  // listen () {
+  //   this.app.listen(process.env.PORT, () => {
+  //     console.log('Servidor corriendo en el puerto:', process.env.PORT)
+  //   })
+  // }
 }
